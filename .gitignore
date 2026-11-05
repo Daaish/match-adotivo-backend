@@ -2,3 +2,8 @@ node_modules/
 dist/
 .env
 *.log
+
+# Metadados e backups
+*:Zone.Identifier
+*.bak
+*.bak-*

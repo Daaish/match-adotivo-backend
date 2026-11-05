@@ -1,0 +1,13 @@
+import "dotenv/config";
+import express from "express";
+import { instituicaoRoutes } from "./modules/instituicao/instituicao.routes";
+import { errorHandler } from "./middlewares/errorHandler";
+
+const app = express();
+app.use(express.json());
+app.get("/", (_req, res) => res.json({ nome: "Match Adotivo API", status: "online" }));
+app.use("/instituicoes", instituicaoRoutes);
+app.use(errorHandler);
+
+const port = Number(process.env.PORT ?? 3000);
+app.listen(port, () => console.log(`API em http://localhost:${port}`));

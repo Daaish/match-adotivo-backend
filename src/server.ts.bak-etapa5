@@ -1,0 +1,19 @@
+import "dotenv/config";
+import express from "express";
+import { instituicaoRoutes } from "./modules/instituicao/instituicao.routes";
+import { animalRoutes } from "./modules/animal/animal.routes";
+import { vacinaRoutes } from "./modules/vacina/vacina.routes";
+import { animalVacinaRoutes } from "./modules/animal-vacina/animal-vacina.routes";
+import { errorHandler } from "./middlewares/errorHandler";
+
+const app = express();
+app.use(express.json());
+app.get("/", (_req, res) => res.json({ nome: "Match Adotivo API", status: "online" }));
+app.use("/instituicoes", instituicaoRoutes);
+app.use("/animais", animalRoutes);
+app.use("/vacinas", vacinaRoutes);
+app.use("/animais-vacinas", animalVacinaRoutes);
+app.use(errorHandler);
+
+const port = Number(process.env.PORT ?? 3000);
+app.listen(port, () => console.log(`API em http://localhost:${port}`));

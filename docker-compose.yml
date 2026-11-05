@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:16
+    container_name: pg-match-adotivo
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "123456"
+      POSTGRES_DB: match_adotivo
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:

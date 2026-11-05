@@ -1,0 +1,69 @@
+// use prisma-8
+// Modelo relacional baseado no PDF "Sistema Match de Adoção".
+// Os limites de caracteres, CPF/CNPJ e demais regras serão validados no Zod.
+model Instituicao {
+  id_instituicao Int @id @default(autoincrement())
+  cnpj String @unique
+  razao_social String
+  endereco String
+  foto String?
+
+  animais Animal[]
+}
+
+model Animal {
+  id_animal Int @id @default(autoincrement())
+  raca String?
+  tipo String
+  data_nascimento DateTime?
+  detalhes String?
+  foto String?
+  id_instituicao Int
+
+  instituicao Instituicao @relation(fields: [id_instituicao], references: [id_instituicao])
+  vacinas AnimalVacina[]
+  matches Match[]
+}
+
+model Vacina {
+  id_vacina Int @id @default(autoincrement())
+  nome String
+
+  aplicacoes AnimalVacina[]
+}
+
+model AnimalVacina {
+  id_animal_vacina Int @id @default(autoincrement())
+  id_animal Int
+  id_vacina Int
+  data_aplicacao DateTime
+
+  animal Animal @relation(fields: [id_animal], references: [id_animal])
+  vacina Vacina @relation(fields: [id_vacina], references: [id_vacina])
+
+  @@map("Animal_Vacina")
+}
+
+model Adotante {
+  id_adotante Int @id @default(autoincrement())
+  cpf String @unique
+  nome String
+  endereco String
+  tipo_residencia String
+  possui_animais Boolean
+  quantidade_animais Int
+  tipos_animais String?
+
+  matches Match[]
+}
+
+model Match {
+  id_match Int @id @default(autoincrement())
+  id_adotante Int
+  id_animal Int
+  data_pedido DateTime @default(now())
+  status String @default("PENDENTE")
+
+  adotante Adotante @relation(fields: [id_adotante], references: [id_adotante])
+  animal Animal @relation(fields: [id_animal], references: [id_animal])
+}

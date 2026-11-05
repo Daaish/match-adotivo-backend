@@ -1,0 +1,26 @@
+import "dotenv/config";
+import express from "express";
+import swaggerUi from "swagger-ui-express";
+import { openApiDocument } from "./utils/openapi";
+import { instituicaoRoutes } from "./modules/instituicao/instituicao.routes";
+import { animalRoutes } from "./modules/animal/animal.routes";
+import { vacinaRoutes } from "./modules/vacina/vacina.routes";
+import { animalVacinaRoutes } from "./modules/animal-vacina/animal-vacina.routes";
+import { adotanteRoutes } from "./modules/adotante/adotante.routes";
+import { matchRoutes } from "./modules/match/match.routes";
+import { errorHandler } from "./middlewares/errorHandler";
+
+const app = express();
+app.use(express.json());
+app.get("/", (_req, res) => res.json({ nome: "Match Adotivo API", status: "online" }));
+app.use("/instituicoes", instituicaoRoutes);
+app.use("/animais", animalRoutes);
+app.use("/vacinas", vacinaRoutes);
+app.use("/animais-vacinas", animalVacinaRoutes);
+app.use("/adotantes", adotanteRoutes);
+app.use("/matches", matchRoutes);
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(openApiDocument));
+app.get("/openapi.json", (_req, res) => res.json(openApiDocument));
+app.use(errorHandler);
+const port = Number(process.env.PORT ?? 3000);
+app.listen(port, () => console.log(`API em http://localhost:${port}`));

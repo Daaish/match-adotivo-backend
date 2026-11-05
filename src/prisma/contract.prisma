@@ -7,6 +7,7 @@ model Instituicao {
   razao_social String
   endereco String
   foto String?
+  usuario Usuario?
 
   animais Animal[]
 }
@@ -53,6 +54,7 @@ model Adotante {
   possui_animais Boolean
   quantidade_animais Int
   tipos_animais String?
+  usuario Usuario?
 
   matches Match[]
 }
@@ -66,4 +68,27 @@ model Match {
 
   adotante Adotante @relation(fields: [id_adotante], references: [id_adotante])
   animal Animal @relation(fields: [id_animal], references: [id_animal])
+}
+
+model Usuario {
+  id             Int      @id @default(autoincrement())
+  nome           String
+  email          String   @unique
+  senha          String
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  perfil         String   @default("SEM_PERFIL")
+
+  id_instituicao Int?     @unique
+  id_adotante    Int?     @unique
+
+  instituicao Instituicao? @relation(
+    fields: [id_instituicao],
+    references: [id_instituicao]
+  )
+
+  adotante Adotante? @relation(
+    fields: [id_adotante],
+    references: [id_adotante]
+  )
 }

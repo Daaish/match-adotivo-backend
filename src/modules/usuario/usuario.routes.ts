@@ -1,0 +1,11 @@
+import { Router } from "express";
+import { usuarioController as c } from "./usuario.controller";
+import { validate } from "../../middlewares/validate";
+import { autenticar } from "../../middlewares/autenticar";
+import { carregarUsuario, permitirPerfis } from "../../middlewares/autorizar";
+import { createUsuarioSchema, loginSchema } from "./usuario.schema";
+export const usuarioRoutes = Router();
+usuarioRoutes.post("/", validate(createUsuarioSchema), c.create);
+usuarioRoutes.post("/login", validate(loginSchema), c.login);
+usuarioRoutes.post("/logout", autenticar, c.logout);
+usuarioRoutes.get("/", autenticar, carregarUsuario, permitirPerfis("ADMIN"), c.getAll);

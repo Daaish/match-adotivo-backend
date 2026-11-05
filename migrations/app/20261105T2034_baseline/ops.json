@@ -1,0 +1,742 @@
+[
+  {
+    "id": "schema.public",
+    "label": "Create schema \"public\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres"
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "Create schema \"public\"",
+        "sql": "CREATE SCHEMA IF NOT EXISTS \"public\"",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "table.Adotante",
+    "label": "Create table \"Adotante\"",
+    "summary": "Creates table \"Adotante\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Adotante"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Adotante\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Adotante\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Adotante\"",
+        "sql": "CREATE TABLE \"public\".\"Adotante\" (\n  \"cpf\" text NOT NULL,\n  \"endereco\" text NOT NULL,\n  \"id_adotante\" SERIAL NOT NULL,\n  \"nome\" text NOT NULL,\n  \"possui_animais\" bool NOT NULL,\n  \"quantidade_animais\" int4 NOT NULL,\n  \"tipo_residencia\" text NOT NULL,\n  \"tipos_animais\" text,\n  PRIMARY KEY (\"id_adotante\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Adotante\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Adotante\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.Animal",
+    "label": "Create table \"Animal\"",
+    "summary": "Creates table \"Animal\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Animal"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Animal\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Animal\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Animal\"",
+        "sql": "CREATE TABLE \"public\".\"Animal\" (\n  \"data_nascimento\" timestamptz,\n  \"detalhes\" text,\n  \"foto\" text,\n  \"id_animal\" SERIAL NOT NULL,\n  \"id_instituicao\" int4 NOT NULL,\n  \"raca\" text,\n  \"tipo\" text NOT NULL,\n  PRIMARY KEY (\"id_animal\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Animal\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Animal\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.Animal_Vacina",
+    "label": "Create table \"Animal_Vacina\"",
+    "summary": "Creates table \"Animal_Vacina\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Animal_Vacina"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Animal_Vacina\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Animal_Vacina\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Animal_Vacina\"",
+        "sql": "CREATE TABLE \"public\".\"Animal_Vacina\" (\n  \"data_aplicacao\" timestamptz NOT NULL,\n  \"id_animal\" int4 NOT NULL,\n  \"id_animal_vacina\" SERIAL NOT NULL,\n  \"id_vacina\" int4 NOT NULL,\n  PRIMARY KEY (\"id_animal_vacina\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Animal_Vacina\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Animal_Vacina\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.Instituicao",
+    "label": "Create table \"Instituicao\"",
+    "summary": "Creates table \"Instituicao\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Instituicao"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Instituicao\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Instituicao\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Instituicao\"",
+        "sql": "CREATE TABLE \"public\".\"Instituicao\" (\n  \"cnpj\" text NOT NULL,\n  \"endereco\" text NOT NULL,\n  \"foto\" text,\n  \"id_instituicao\" SERIAL NOT NULL,\n  \"razao_social\" text NOT NULL,\n  PRIMARY KEY (\"id_instituicao\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Instituicao\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Instituicao\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.Match",
+    "label": "Create table \"Match\"",
+    "summary": "Creates table \"Match\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Match"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Match\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Match\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Match\"",
+        "sql": "CREATE TABLE \"public\".\"Match\" (\n  \"data_pedido\" timestamptz DEFAULT (now()) NOT NULL,\n  \"id_adotante\" int4 NOT NULL,\n  \"id_animal\" int4 NOT NULL,\n  \"id_match\" SERIAL NOT NULL,\n  \"status\" text DEFAULT 'PENDENTE' NOT NULL,\n  PRIMARY KEY (\"id_match\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Match\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Match\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.Vacina",
+    "label": "Create table \"Vacina\"",
+    "summary": "Creates table \"Vacina\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Vacina"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Vacina\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Vacina\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Vacina\"",
+        "sql": "CREATE TABLE \"public\".\"Vacina\" (\n  \"id_vacina\" SERIAL NOT NULL,\n  \"nome\" text NOT NULL,\n  PRIMARY KEY (\"id_vacina\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Vacina\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Vacina\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.Adotante.Adotante_cpf_key",
+    "label": "Add unique constraint on \"Adotante\" (cpf)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "Adotante_cpf_key",
+        "table": "Adotante"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"Adotante_cpf_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Adotante_cpf_key",
+          "public",
+          "\"public\".\"Adotante\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"Adotante_cpf_key\"",
+        "sql": "ALTER TABLE \"public\".\"Adotante\" ADD CONSTRAINT \"Adotante_cpf_key\" UNIQUE (\"cpf\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"Adotante_cpf_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Adotante_cpf_key",
+          "public",
+          "\"public\".\"Adotante\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.Instituicao.Instituicao_cnpj_key",
+    "label": "Add unique constraint on \"Instituicao\" (cnpj)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "Instituicao_cnpj_key",
+        "table": "Instituicao"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"Instituicao_cnpj_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Instituicao_cnpj_key",
+          "public",
+          "\"public\".\"Instituicao\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"Instituicao_cnpj_key\"",
+        "sql": "ALTER TABLE \"public\".\"Instituicao\" ADD CONSTRAINT \"Instituicao_cnpj_key\" UNIQUE (\"cnpj\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"Instituicao_cnpj_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Instituicao_cnpj_key",
+          "public",
+          "\"public\".\"Instituicao\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Animal.Animal_id_instituicao_idx_c78bbdf2",
+    "label": "Create index \"Animal_id_instituicao_idx_c78bbdf2\" on \"Animal\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Animal_id_instituicao_idx_c78bbdf2",
+        "table": "Animal"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Animal_id_instituicao_idx_c78bbdf2\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Animal_id_instituicao_idx_c78bbdf2\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Animal_id_instituicao_idx_c78bbdf2\"",
+        "sql": "CREATE INDEX \"Animal_id_instituicao_idx_c78bbdf2\" ON \"public\".\"Animal\" (\"id_instituicao\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Animal_id_instituicao_idx_c78bbdf2\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Animal_id_instituicao_idx_c78bbdf2\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Animal_Vacina.Animal_Vacina_id_animal_idx_6941e98e",
+    "label": "Create index \"Animal_Vacina_id_animal_idx_6941e98e\" on \"Animal_Vacina\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Animal_Vacina_id_animal_idx_6941e98e",
+        "table": "Animal_Vacina"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Animal_Vacina_id_animal_idx_6941e98e\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Animal_Vacina_id_animal_idx_6941e98e\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Animal_Vacina_id_animal_idx_6941e98e\"",
+        "sql": "CREATE INDEX \"Animal_Vacina_id_animal_idx_6941e98e\" ON \"public\".\"Animal_Vacina\" (\"id_animal\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Animal_Vacina_id_animal_idx_6941e98e\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Animal_Vacina_id_animal_idx_6941e98e\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Animal_Vacina.Animal_Vacina_id_vacina_idx_1214447b",
+    "label": "Create index \"Animal_Vacina_id_vacina_idx_1214447b\" on \"Animal_Vacina\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Animal_Vacina_id_vacina_idx_1214447b",
+        "table": "Animal_Vacina"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Animal_Vacina_id_vacina_idx_1214447b\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Animal_Vacina_id_vacina_idx_1214447b\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Animal_Vacina_id_vacina_idx_1214447b\"",
+        "sql": "CREATE INDEX \"Animal_Vacina_id_vacina_idx_1214447b\" ON \"public\".\"Animal_Vacina\" (\"id_vacina\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Animal_Vacina_id_vacina_idx_1214447b\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Animal_Vacina_id_vacina_idx_1214447b\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Match.Match_id_adotante_idx_cd3390a2",
+    "label": "Create index \"Match_id_adotante_idx_cd3390a2\" on \"Match\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Match_id_adotante_idx_cd3390a2",
+        "table": "Match"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Match_id_adotante_idx_cd3390a2\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Match_id_adotante_idx_cd3390a2\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Match_id_adotante_idx_cd3390a2\"",
+        "sql": "CREATE INDEX \"Match_id_adotante_idx_cd3390a2\" ON \"public\".\"Match\" (\"id_adotante\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Match_id_adotante_idx_cd3390a2\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Match_id_adotante_idx_cd3390a2\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Match.Match_id_animal_idx_6941e98e",
+    "label": "Create index \"Match_id_animal_idx_6941e98e\" on \"Match\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Match_id_animal_idx_6941e98e",
+        "table": "Match"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Match_id_animal_idx_6941e98e\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Match_id_animal_idx_6941e98e\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Match_id_animal_idx_6941e98e\"",
+        "sql": "CREATE INDEX \"Match_id_animal_idx_6941e98e\" ON \"public\".\"Match\" (\"id_animal\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Match_id_animal_idx_6941e98e\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Match_id_animal_idx_6941e98e\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Animal.Animal_id_instituicao_fkey",
+    "label": "Add foreign key \"Animal_id_instituicao_fkey\" on \"Animal\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Animal_id_instituicao_fkey",
+        "table": "Animal"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Animal_id_instituicao_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Animal_id_instituicao_fkey",
+          "public",
+          "\"public\".\"Animal\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Animal_id_instituicao_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Animal\"\nADD CONSTRAINT \"Animal_id_instituicao_fkey\"\nFOREIGN KEY (\"id_instituicao\")\nREFERENCES \"public\".\"Instituicao\" (\"id_instituicao\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Animal_id_instituicao_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Animal_id_instituicao_fkey",
+          "public",
+          "\"public\".\"Animal\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Animal_Vacina.Animal_Vacina_id_animal_fkey",
+    "label": "Add foreign key \"Animal_Vacina_id_animal_fkey\" on \"Animal_Vacina\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Animal_Vacina_id_animal_fkey",
+        "table": "Animal_Vacina"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Animal_Vacina_id_animal_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Animal_Vacina_id_animal_fkey",
+          "public",
+          "\"public\".\"Animal_Vacina\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Animal_Vacina_id_animal_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Animal_Vacina\"\nADD CONSTRAINT \"Animal_Vacina_id_animal_fkey\"\nFOREIGN KEY (\"id_animal\")\nREFERENCES \"public\".\"Animal\" (\"id_animal\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Animal_Vacina_id_animal_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Animal_Vacina_id_animal_fkey",
+          "public",
+          "\"public\".\"Animal_Vacina\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Animal_Vacina.Animal_Vacina_id_vacina_fkey",
+    "label": "Add foreign key \"Animal_Vacina_id_vacina_fkey\" on \"Animal_Vacina\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Animal_Vacina_id_vacina_fkey",
+        "table": "Animal_Vacina"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Animal_Vacina_id_vacina_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Animal_Vacina_id_vacina_fkey",
+          "public",
+          "\"public\".\"Animal_Vacina\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Animal_Vacina_id_vacina_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Animal_Vacina\"\nADD CONSTRAINT \"Animal_Vacina_id_vacina_fkey\"\nFOREIGN KEY (\"id_vacina\")\nREFERENCES \"public\".\"Vacina\" (\"id_vacina\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Animal_Vacina_id_vacina_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Animal_Vacina_id_vacina_fkey",
+          "public",
+          "\"public\".\"Animal_Vacina\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Match.Match_id_adotante_fkey",
+    "label": "Add foreign key \"Match_id_adotante_fkey\" on \"Match\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Match_id_adotante_fkey",
+        "table": "Match"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Match_id_adotante_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Match_id_adotante_fkey",
+          "public",
+          "\"public\".\"Match\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Match_id_adotante_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Match\"\nADD CONSTRAINT \"Match_id_adotante_fkey\"\nFOREIGN KEY (\"id_adotante\")\nREFERENCES \"public\".\"Adotante\" (\"id_adotante\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Match_id_adotante_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Match_id_adotante_fkey",
+          "public",
+          "\"public\".\"Match\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Match.Match_id_animal_fkey",
+    "label": "Add foreign key \"Match_id_animal_fkey\" on \"Match\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Match_id_animal_fkey",
+        "table": "Match"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Match_id_animal_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Match_id_animal_fkey",
+          "public",
+          "\"public\".\"Match\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Match_id_animal_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Match\"\nADD CONSTRAINT \"Match_id_animal_fkey\"\nFOREIGN KEY (\"id_animal\")\nREFERENCES \"public\".\"Animal\" (\"id_animal\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Match_id_animal_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Match_id_animal_fkey",
+          "public",
+          "\"public\".\"Match\""
+        ]
+      }
+    ]
+  }
+]

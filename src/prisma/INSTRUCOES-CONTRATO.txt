@@ -1,0 +1,9 @@
+Acrescente ao FINAL de src/prisma/contract.prisma (não substitua o contrato existente):
+
+model Usuario {
+  id Int @id @default(autoincrement())
+  nome String
+  email String @unique
+  senha String
+  createdAt DateTime @default(now()) @map("created_at")
+}

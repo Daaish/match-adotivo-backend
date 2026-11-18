@@ -2,6 +2,7 @@ import { Router } from "express";
 import { matchController as c } from "./match.controller";
 import { permitirPerfis } from "../../middlewares/autorizar";
 export const matchRoutes = Router();
+matchRoutes.post("/me", permitirPerfis("ADOTANTE"), c.createMe);
 matchRoutes.get("/", permitirPerfis("ADMIN", "INSTITUICAO", "ADOTANTE"), c.getAll);
 matchRoutes.get("/:id", permitirPerfis("ADMIN", "INSTITUICAO", "ADOTANTE"), c.getById);
 matchRoutes.post("/", permitirPerfis("ADMIN", "ADOTANTE"), c.create);

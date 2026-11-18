@@ -19,4 +19,8 @@ export const animalUpdateSchema = animalCreateSchema.partial().refine(
   "Informe pelo menos um campo para atualização",
 );
 
+export const animalListagemQuerySchema = z.object({
+  disponivel: z.literal("true").optional(),
+});
+
 export const animalIdSchema = z.coerce.number().int().positive();

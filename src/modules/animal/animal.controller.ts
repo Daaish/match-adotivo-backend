@@ -1,17 +1,20 @@
 import type { Request, Response } from "express";
 import { animalService as service } from "./animal.service";
-import { animalCreateSchema, animalUpdateSchema, animalIdSchema } from "./animal.schema";
+import { animalCreateSchema, animalUpdateSchema, animalIdSchema, animalListagemQuerySchema } from "./animal.schema";
 
 const lerId = (req: Request) => animalIdSchema.parse(req.params.id);
 type UsuarioAtual = { perfil: string; id_instituicao: number | null };
 const usuarioAtual = (res: Response) => res.locals.usuarioAtual as UsuarioAtual;
 
 export const animalController = {
-  getAll: async (_req: Request, res: Response) => {
-    res.json(await service.getAll());
+  // Valida o filtro opcional antes de buscar os animais — 18/11/2026.
+  getAll: async (req: Request, res: Response) => {
+    const filtro = animalListagemQuerySchema.parse(req.query);
+    res.json(await service.getAll(filtro.disponivel === "true"));
   },
+  // Retorna o animal com a disponibilidade atual para adoção — 18/11/2026.
   getById: async (req: Request, res: Response) => {
-    res.json(await service.findById(lerId(req)));
+    res.json(await service.buscarDetalhes(lerId(req)));
   },
   create: async (req: Request, res: Response) => {
     const dados = animalCreateSchema.parse(req.body);

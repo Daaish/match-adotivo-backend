@@ -1,6 +1,7 @@
 import { z } from "zod";
 import type { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
 import { json, erro } from "../../utils/openapi.helpers";
+import { animalListagemQuerySchema } from "./animal.schema";
 
 // Os campos e restrições espelham os schemas Zod de execução.
 // Datas são documentadas como strings ISO; o schema de execução converte para Temporal.Instant.
@@ -29,12 +30,24 @@ export function registerAnimalPaths(registry: OpenAPIRegistry) {
   const tag = "Animais";
   registry.registerPath({
     method: "get", path: prefix, tags: [tag], summary: "Listar registros",
-    responses: { 200: { description: "Lista de registros", content: json(z.array(resposta)) } },
+    description: "Use disponivel=true para listar apenas animais sem adoção aprovada.",
+    request: { query: animalListagemQuerySchema },
+    responses: {
+      200: { description: "Lista de registros", content: json(z.array(resposta)) },
+      400: erro("Filtro de disponibilidade inválido"),
+    },
   });
   registry.registerPath({
     method: "get", path: `${prefix}/{id}`, tags: [tag], summary: "Buscar por ID",
     request: { params },
-    responses: { 200: { description: "Registro encontrado", content: json(resposta) }, 400: erro("ID inválido"), 404: erro("Registro não encontrado") },
+    responses: {
+      200: {
+        description: "Registro encontrado com disponibilidade para adoção",
+        content: json(resposta.extend({ disponivel: z.boolean() })),
+      },
+      400: erro("ID inválido"),
+      404: erro("Registro não encontrado"),
+    },
   });
   registry.registerPath({
     method: "post", path: prefix, tags: [tag], summary: "Cadastrar",

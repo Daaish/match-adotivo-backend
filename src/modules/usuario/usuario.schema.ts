@@ -11,4 +11,8 @@ export const loginSchema = z.object({
 export const usuarioResponseSchema = z.object({
   id: z.number().int(), nome: z.string(), email: z.string(), createdAt: z.iso.datetime()
 });
+export const usuarioAtualResponseSchema = z.object({
+  id: z.number().int(),
+  perfil: z.enum(["ADMIN", "INSTITUICAO", "ADOTANTE", "SEM_PERFIL"]),
+});
 export const tokenResponseSchema = z.object({ token: z.string() });

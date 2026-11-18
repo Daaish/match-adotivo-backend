@@ -12,6 +12,10 @@ export const animalController = {
     const filtro = animalListagemQuerySchema.parse(req.query);
     res.json(await service.getAll(filtro.disponivel === "true"));
   },
+  // Lista os animais com base apenas no vínculo do usuário autenticado — 18/11/2026.
+  me: async (_req: Request, res: Response) => {
+    res.json(await service.listarDaInstituicao(usuarioAtual(res)));
+  },
   // Retorna o animal com a disponibilidade atual para adoção — 18/11/2026.
   getById: async (req: Request, res: Response) => {
     res.json(await service.buscarDetalhes(lerId(req)));

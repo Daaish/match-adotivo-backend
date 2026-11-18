@@ -11,8 +11,15 @@ export const loginSchema = z.object({
 export const usuarioResponseSchema = z.object({
   id: z.number().int(), nome: z.string(), email: z.string(), createdAt: z.iso.datetime()
 });
-export const usuarioAtualResponseSchema = z.object({
-  id: z.number().int(),
-  perfil: z.enum(["ADMIN", "INSTITUICAO", "ADOTANTE", "SEM_PERFIL"]),
-});
+export const usuarioAtualResponseSchema = z.discriminatedUnion("perfil", [
+  z.object({
+    id: z.number().int(),
+    perfil: z.literal("INSTITUICAO"),
+    id_instituicao: z.number().int().positive().nullable(),
+  }),
+  z.object({
+    id: z.number().int(),
+    perfil: z.enum(["ADMIN", "ADOTANTE", "SEM_PERFIL"]),
+  }),
+]);
 export const tokenResponseSchema = z.object({ token: z.string() });

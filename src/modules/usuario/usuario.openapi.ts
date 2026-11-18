@@ -19,7 +19,7 @@ export function registerUsuarioPaths(registry: OpenAPIRegistry) {
     security,
     responses: {
       200: {
-        description: "Identificador e perfil atual do usuário",
+        description: "Identificador e perfil atual. Para INSTITUICAO, inclui o identificador da instituição ou null se não houver vínculo.",
         headers: cabecalhosUsuarioAtual,
         content: json(usuarioAtualResponseSchema),
       },

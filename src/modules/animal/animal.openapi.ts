@@ -38,6 +38,16 @@ export function registerAnimalPaths(registry: OpenAPIRegistry) {
     },
   });
   registry.registerPath({
+    method: "get", path: `${prefix}/me`, tags: [tag], summary: "Listar animais da instituição autenticada",
+    description: "Exclusivo para INSTITUICAO. Usa o vínculo da conta autenticada, sem parâmetros de filtro.",
+    security: [{ bearerAuth: [] }],
+    responses: {
+      200: { description: "Animais próprios em ordem crescente por ID, inclusive lista vazia", content: json(z.array(resposta)) },
+      401: erro("Sessão inválida ou usuário inexistente"),
+      403: erro("Perfil sem permissão ou conta sem vínculo institucional válido"),
+    },
+  });
+  registry.registerPath({
     method: "get", path: `${prefix}/{id}`, tags: [tag], summary: "Buscar por ID",
     request: { params },
     responses: {

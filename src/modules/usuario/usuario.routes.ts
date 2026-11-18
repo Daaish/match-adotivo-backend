@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, type RequestHandler } from "express";
 import { usuarioController as c } from "./usuario.controller";
 import { validate } from "../../middlewares/validate";
 import { autenticar } from "../../middlewares/autenticar";
@@ -9,7 +9,14 @@ import {
   cadastroAdotanteSchema,
   cadastroInstituicaoSchema
 } from "./cadastro-perfil.schema";
+// Impede cache da consulta de sessão, inclusive quando a autenticação falha — 18/11/2026.
+const desabilitarCache: RequestHandler = (_req, res, proximo) => {
+  res.set("Cache-Control", "no-store");
+  proximo();
+};
+
 export const usuarioRoutes = Router();
+usuarioRoutes.get("/me", desabilitarCache, autenticar, carregarUsuario, c.me);
 usuarioRoutes.post(
   "/cadastro-adotante",
   validate(cadastroAdotanteSchema),

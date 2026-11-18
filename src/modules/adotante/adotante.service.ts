@@ -1,8 +1,10 @@
 import { adotanteRepository as repo } from "./adotante.repo";
 import { ConflictError, NotFoundError } from "../../utils/errors";
 import type { CreateAdotanteDTO, UpdateAdotanteDTO } from "./adotante.types";
-function validarCoerencia(d: { possui_animais: boolean; quantidade_animais: number }) {
-  if ((!d.possui_animais && d.quantidade_animais !== 0) || (d.possui_animais && d.quantidade_animais === 0)) {
+// Confere a quantidade declarada nos fluxos público e administrativo — 18/11/2026.
+export function validarCoerencia(dados: { possui_animais: boolean; quantidade_animais: number }) {
+  if ((!dados.possui_animais && dados.quantidade_animais !== 0) ||
+    (dados.possui_animais && dados.quantidade_animais === 0)) {
     throw new ConflictError("Quantidade de animais incompatível com possui_animais");
   }
 }

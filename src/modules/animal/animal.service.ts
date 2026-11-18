@@ -36,6 +36,17 @@ export const animalService = {
     const idsComAdocao = new Set(aprovados.map(({ id_animal }) => id_animal));
     return animais.filter(({ id_animal }) => !idsComAdocao.has(id_animal));
   },
+  // Valida o vínculo institucional antes de consultar seus animais — 18/11/2026.
+  listarDaInstituicao: async (usuario: UsuarioAtual) => {
+    const idInstituicao = usuario.id_instituicao;
+    if (
+      usuario.perfil !== "INSTITUICAO" || idInstituicao === null ||
+      !Number.isSafeInteger(idInstituicao) || idInstituicao <= 0
+    ) {
+      throw new AppError("Conta sem vínculo institucional válido", 403);
+    }
+    return repo.listarPorInstituicao(idInstituicao);
+  },
   // Calcula a disponibilidade de um animal encontrado sem alterar os dados persistidos — 18/11/2026.
   buscarDetalhes: async (id: number) => {
     const animal = await animalService.findById(id);

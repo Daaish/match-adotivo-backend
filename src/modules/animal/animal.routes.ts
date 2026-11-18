@@ -3,6 +3,7 @@ import { animalController as c } from "./animal.controller";
 import { permitirPerfis } from "../../middlewares/autorizar";
 export const animalRoutes = Router();
 animalRoutes.get("/", c.getAll);
+animalRoutes.get("/me", permitirPerfis("INSTITUICAO"), c.me);
 animalRoutes.get("/:id", c.getById);
 animalRoutes.post("/", permitirPerfis("ADMIN", "INSTITUICAO"), c.create);
 animalRoutes.put("/:id", permitirPerfis("ADMIN", "INSTITUICAO"), c.update);

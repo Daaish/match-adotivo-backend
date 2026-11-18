@@ -3,12 +3,13 @@ import { AppError } from "../../utils/errors";
 import { usuarioAtualResponseSchema } from "./usuario.schema";
 import { usuarioService } from "./usuario.service";
 export const usuarioController = {
-  // Retorna a identidade mínima a partir do usuário carregado do banco — 18/11/2026.
+  // Retorna a identidade e, para instituições, o vínculo carregado do banco — 18/11/2026.
   me: (_req: Request, res: Response) => {
     const usuario = res.locals.usuarioAtual;
     const resultado = usuarioAtualResponseSchema.safeParse({
       id: usuario.id,
       perfil: usuario.perfil,
+      ...(usuario.perfil === "INSTITUICAO" ? { id_instituicao: usuario.id_instituicao } : {}),
     });
     if (!resultado.success) throw new AppError("Erro interno do servidor", 500);
     res.status(200).json(resultado.data);

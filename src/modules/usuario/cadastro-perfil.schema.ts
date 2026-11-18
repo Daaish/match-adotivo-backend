@@ -2,19 +2,15 @@ import { z } from "zod";
 import { adotanteCreateSchema } from "../adotante/adotante.schema";
 import { instituicaoCreateSchema } from "../instituicao/instituicao.schema";
 
-const conta = z.object({
-  nome: z.string().trim().min(3).max(200),
-  email: z.email().max(255),
-  senha: z.string().min(8).max(128),
-}).strict();
+import { createUsuarioSchema } from "./usuario.schema";
 
 export const cadastroAdotanteSchema = z.object({
-  usuario: conta,
+  usuario: createUsuarioSchema,
   adotante: adotanteCreateSchema,
 }).strict();
 
 export const cadastroInstituicaoSchema = z.object({
-  usuario: conta,
+  usuario: createUsuarioSchema,
   instituicao: instituicaoCreateSchema,
 }).strict();
 

@@ -1,26 +1,40 @@
 # Match Adotivo — Backend
 
-Backend da disciplina Desenvolvimento de Aplicações WEB II, com modelo relacional do PDF **Sistema Match de Adoção**.
+API do projeto acadêmico de adoção de animais da disciplina Desenvolvimento de Aplicações Web II. Usa Express, TypeScript, PostgreSQL, Prisma, Zod e autenticação por JWT.
 
 ## Requisitos
-- Node.js 22.18+ (ou versão compatível indicada no Laboratório III)
-- Docker + Docker Compose
 
-## Iniciar
+- Node.js 24.12 ou superior e npm.
+- PostgreSQL de demonstração com o schema do projeto já preparado. O Docker Compose é opcional e oferece PostgreSQL 16 na porta local `5433`.
+
+## Instalação e configuração
+
+Na pasta do backend, instale as dependências:
+
 ```bash
-cp .env.example .env
-npm install
-docker compose up -d
-npx prisma contract emit
-npx prisma db init
-npm run dev
+npm ci
 ```
-Acesse http://localhost:3000/. O PostgreSQL é exposto na porta **5433** para evitar conflito com bancos locais existentes na 5432.
 
-## Entidades
-Instituicao, Animal, Vacina, AnimalVacina (tabela Animal_Vacina), Adotante e Match.
+Em uma configuração nova, copie `.env.example` para `.env`. Preserve o arquivo existente caso o ambiente já esteja configurado. Preencha:
 
-## Próximas etapas
-Criar os módulos `routes → controller → service → repository`, validar os campos com Zod e documentar com Swagger. Implementar as regras RN04 e RN06, inclusive proteção concorrente para aprovações, e adicionar usuários/JWT posteriormente.
+| Variável | Uso |
+|---|---|
+| `DATABASE_URL` | Conexão do PostgreSQL de demonstração. O exemplo corresponde ao Compose local. |
+| `PORT` | Porta HTTP. Use `3000` para corresponder ao proxy atual do frontend. |
+| `JWT_SECRET` | Segredo aleatório com pelo menos 32 caracteres. Gere localmente, por exemplo com `openssl rand -hex 32`, e guarde apenas no ambiente local. |
 
-> Não versionar `.env`. O arquivo `.env.example` contém apenas valores de desenvolvimento.
+Mantenha o `.env` fora do Git. Use dados fictícios na apresentação. Prepare de antemão uma conta `ADMIN` no banco de demonstração. Os cadastros públicos criam contas `ADOTANTE` e `INSTITUICAO`.
+
+## Execução
+
+Com o PostgreSQL de demonstração já preparado e acessível:
+
+```bash
+npm run start
+```
+
+Para desenvolvimento com recarga, use `npm run dev`. O Compose pode iniciar o PostgreSQL local com `docker compose up -d db`, mas um volume novo precisa ser preparado com o schema e os dados fictícios antes do ensaio. Os comandos `db:emit` e `db:init` são de preparação, separados da inicialização normal. Durante a apresentação, use o banco já preparado.
+
+- API em `http://localhost:3000/`.
+- Swagger em `http://localhost:3000/docs`.
+- Checagem de tipos sem escrita no banco com `npm run typecheck`.
